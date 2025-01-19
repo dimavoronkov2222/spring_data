@@ -20,7 +20,7 @@ public class DispatcherControllerTest {
     private DispatcherController dispatcherController;
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
     @Test
     public void testAssignRequest_Success() {
@@ -30,6 +30,7 @@ public class DispatcherControllerTest {
         doNothing().when(dispatcherService).assignRequest(request);
         ResponseEntity<String> response = dispatcherController.assignRequest(requestDTO);
         assertEquals(ResponseEntity.ok("Request assigned successfully."), response);
+        verify(dispatcherService, times(1)).assignRequest(request);
     }
     @Test
     public void testAssignRequest_Failure() {
@@ -39,6 +40,7 @@ public class DispatcherControllerTest {
         doThrow(new RuntimeException("Error")).when(dispatcherService).assignRequest(request);
         ResponseEntity<String> response = dispatcherController.assignRequest(requestDTO);
         assertEquals(ResponseEntity.badRequest().body("Error"), response);
+        verify(dispatcherService, times(1)).assignRequest(request);
     }
     @Test
     public void testRequestRepair_Success() {
@@ -46,6 +48,7 @@ public class DispatcherControllerTest {
         doNothing().when(dispatcherService).requestRepair(vehicleId);
         ResponseEntity<String> response = dispatcherController.requestRepair(vehicleId);
         assertEquals(ResponseEntity.ok("Repair request submitted successfully."), response);
+        verify(dispatcherService, times(1)).requestRepair(vehicleId);
     }
     @Test
     public void testRequestRepair_Failure() {
@@ -53,23 +56,26 @@ public class DispatcherControllerTest {
         doThrow(new RuntimeException("Error")).when(dispatcherService).requestRepair(vehicleId);
         ResponseEntity<String> response = dispatcherController.requestRepair(vehicleId);
         assertEquals(ResponseEntity.badRequest().body("Error"), response);
+        verify(dispatcherService, times(1)).requestRepair(vehicleId);
     }
     @Test
     public void testCompleteTrip_Success() {
-        Long driverId = 1L;
-        Long vehicleId = 1L;
-        boolean vehicleCondition = true;
-        doNothing().when(dispatcherService).completeTrip(driverId, vehicleId, vehicleCondition);
-        ResponseEntity<String> response = dispatcherController.completeTrip(driverId, vehicleId, vehicleCondition);
+        Long tripId = 1L;
+        boolean successful = true;
+        String note = "Completed successfully.";
+        doNothing().when(dispatcherService).completeTrip(tripId, successful, note);
+        ResponseEntity<String> response = dispatcherController.completeTrip(tripId, successful, note);
         assertEquals(ResponseEntity.ok("Trip completed successfully."), response);
+        verify(dispatcherService, times(1)).completeTrip(tripId, successful, note);
     }
     @Test
     public void testCompleteTrip_Failure() {
-        Long driverId = 1L;
-        Long vehicleId = 1L;
-        boolean vehicleCondition = true;
-        doThrow(new RuntimeException("Error")).when(dispatcherService).completeTrip(driverId, vehicleId, vehicleCondition);
-        ResponseEntity<String> response = dispatcherController.completeTrip(driverId, vehicleId, vehicleCondition);
+        Long tripId = 1L;
+        boolean successful = false;
+        String note = "Failed.";
+        doThrow(new RuntimeException("Error")).when(dispatcherService).completeTrip(tripId, successful, note);
+        ResponseEntity<String> response = dispatcherController.completeTrip(tripId, successful, note);
         assertEquals(ResponseEntity.badRequest().body("Error"), response);
+        verify(dispatcherService, times(1)).completeTrip(tripId, successful, note);
     }
 }

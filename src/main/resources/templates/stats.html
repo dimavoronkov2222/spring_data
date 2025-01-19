@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobase - Statistics</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Autobase - Statistics</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/requests">Requests</a>
+        <a href="/drivers">Drivers</a>
+        <a href="/vehicles">Vehicles</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Statistics</h2>
+    <h3>Driver Statistics</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Driver Name</th>
+            <th>Weight Transported</th>
+            <th>Total Earnings</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="driverStat : ${driverStats}">
+            <td th:text="${driverStat.driver.name}"></td>
+            <td th:text="${driverStat.totalWeight}"></td>
+            <td th:text="${driverStat.totalEarnings}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h3>Destination Statistics</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Destination</th>
+            <th>Total Weight</th>
+            <th>Trip Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="destStat : ${destinationStats}">
+            <td th:text="${destStat.destination}"></td>
+            <td th:text="${destStat.totalWeight}"></td>
+            <td th:text="${destStat.tripsCount}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

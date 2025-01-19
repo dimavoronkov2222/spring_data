@@ -78,29 +78,43 @@ public class DispatcherServiceTest {
     }
     @Test
     public void testCompleteTrip_Success() {
-        Long driverId = 1L;
-        Long vehicleId = 1L;
-        boolean vehicleCondition = true;
-        Driver driver = new Driver();
+        Long tripId = 1L;
+        boolean successful = true;
+        String note = "Trip completed successfully";
         Vehicle vehicle = new Vehicle();
         vehicle.setAvailable(false);
-        when(driverRepository.findById(driverId)).thenReturn(Optional.of(driver));
-        when(vehicleRepository.findById(vehicleId)).thenReturn(Optional.of(vehicle));
-        dispatcherService.completeTrip(driverId, vehicleId, vehicleCondition);
+        when(requestRepository.findById(tripId)).thenReturn(Optional.of(new Request()));
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+        dispatcherService.completeTrip(tripId, successful, note);
         assertTrue(vehicle.isAvailable());
         assertFalse(vehicle.isNeedsRepair());
-        verify(driverRepository, times(1)).save(driver);
         verify(vehicleRepository, times(1)).save(vehicle);
+        verify(requestRepository, times(1)).save(any(Request.class));
     }
     @Test
-    public void testCompleteTrip_DriverOrVehicleNotFound() {
-        Long driverId = 1L;
-        Long vehicleId = 1L;
-        when(driverRepository.findById(driverId)).thenReturn(Optional.empty());
-        when(vehicleRepository.findById(vehicleId)).thenReturn(Optional.empty());
+    public void testCompleteTrip_VehicleNotFound() {
+        Long tripId = 1L;
+        boolean successful = true;
+        String note = "Trip completed";
+        when(requestRepository.findById(tripId)).thenReturn(Optional.empty());
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            dispatcherService.completeTrip(driverId, vehicleId, true);
+            dispatcherService.completeTrip(tripId, successful, note);
         });
-        assertEquals("Driver or Vehicle not found.", exception.getMessage());
+        assertEquals("Request not found.", exception.getMessage());
+    }
+    @Test
+    public void testCompleteTrip_Failure() {
+        Long tripId = 1L;
+        boolean successful = false;
+        String note = "Trip failed";
+        Vehicle vehicle = new Vehicle();
+        vehicle.setAvailable(false);
+        when(requestRepository.findById(tripId)).thenReturn(Optional.of(new Request()));
+        when(vehicleRepository.findById(1L)).thenReturn(Optional.of(vehicle));
+        dispatcherService.completeTrip(tripId, successful, note);
+        assertFalse(vehicle.isAvailable());
+        verify(vehicleRepository, times(1)).save(vehicle);
+        verify(requestRepository, times(1)).save(any(Request.class));
     }
 }
+

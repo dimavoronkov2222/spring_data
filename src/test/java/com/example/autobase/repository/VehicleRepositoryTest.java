@@ -14,9 +14,14 @@ public class VehicleRepositoryTest {
         Vehicle vehicle = new Vehicle();
         vehicle.setModel("Truck");
         vehicle.setCapacity(500);
+        vehicle.setAvailable(true);
+        vehicle.setNeedsRepair(false);
         vehicle = vehicleRepository.save(vehicle);
         Optional<Vehicle> foundVehicle = vehicleRepository.findById(vehicle.getId());
         assertTrue(foundVehicle.isPresent());
         assertEquals(vehicle.getModel(), foundVehicle.get().getModel());
+        assertEquals(vehicle.getCapacity(), foundVehicle.get().getCapacity());
+        assertEquals(vehicle.isAvailable(), foundVehicle.get().isAvailable());
+        assertEquals(vehicle.isNeedsRepair(), foundVehicle.get().isNeedsRepair());
     }
 }

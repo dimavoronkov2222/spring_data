@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobase - Drivers</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Autobase - Drivers</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/requests">Requests</a>
+        <a href="/vehicles">Vehicles</a>
+        <a href="/stats">Statistics</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Driver List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Experience</th>
+            <th>Salary</th>
+            <th>Availability</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="driver : ${drivers}">
+            <td th:text="${driver.id}"></td>
+            <td th:text="${driver.name}"></td>
+            <td th:text="${driver.experience}"></td>
+            <td th:text="${driver.totalSalary}"></td>
+            <td th:text="${driver.isAvailable ? 'Available' : 'Not Available'}"></td>
+            <td>
+                <a th:href="@{/assign/{id}(id=${driver.id})}">Assign to Trip</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

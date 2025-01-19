@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobase - Vehicles</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Autobase - Vehicles</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/requests">Requests</a>
+        <a href="/drivers">Drivers</a>
+        <a href="/stats">Statistics</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Vehicle List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Model</th>
+            <th>Capacity</th>
+            <th>Availability</th>
+            <th>Needs Repair</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="vehicle : ${vehicles}">
+            <td th:text="${vehicle.id}"></td>
+            <td th:text="${vehicle.model}"></td>
+            <td th:text="${vehicle.capacity}"></td>
+            <td th:text="${vehicle.available ? 'Available' : 'Not Available'}"></td>
+            <td th:text="${vehicle.needsRepair ? 'Needs Repair' : 'No Repair Needed'}"></td>
+            <td>
+                <a th:href="@{/repair/{id}(id=${vehicle.id})}">Send for Repair</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

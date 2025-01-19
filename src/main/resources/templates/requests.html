@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autobase - Requests</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<header>
+    <h1>Autobase - Trip Requests</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/drivers">Drivers</a>
+        <a href="/vehicles">Vehicles</a>
+        <a href="/stats">Statistics</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Request List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Destination</th>
+            <th>Weight</th>
+            <th>Cargo Type</th>
+            <th>Status</th>
+            <th>Driver</th>
+            <th>Vehicle</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="request : ${requests}">
+            <td th:text="${request.id}"></td>
+            <td th:text="${request.destination}"></td>
+            <td th:text="${request.weight}"></td>
+            <td th:text="${request.cargoType}"></td>
+            <td th:text="${request.completed ? 'Completed' : 'In Progress'}"></td>
+            <td th:text="${request.driver != null ? request.driver.name : 'Not Assigned'}"></td>
+            <td th:text="${request.vehicle != null ? request.vehicle.model : 'Not Assigned'}"></td>
+            <td>
+                <a th:href="@{/assign/{id}(id=${request.id})}">Assign</a>
+                <a th:href="@{/complete/{id}(id=${request.id})}">Complete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

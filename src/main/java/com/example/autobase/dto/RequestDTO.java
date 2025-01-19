@@ -6,4 +6,8 @@ public class RequestDTO {
     private String destination;
     private int weight;
     private String cargoType;
+    private boolean completed;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }

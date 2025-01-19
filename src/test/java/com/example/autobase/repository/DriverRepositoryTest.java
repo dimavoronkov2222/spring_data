@@ -14,11 +14,10 @@ public class DriverRepositoryTest {
         Driver driver = new Driver();
         driver.setName("John Doe");
         driver.setExperience(5);
-
         driver = driverRepository.save(driver);
-
         Optional<Driver> foundDriver = driverRepository.findById(driver.getId());
         assertTrue(foundDriver.isPresent());
         assertEquals(driver.getName(), foundDriver.get().getName());
+        assertEquals(driver.getExperience(), foundDriver.get().getExperience());
     }
 }
